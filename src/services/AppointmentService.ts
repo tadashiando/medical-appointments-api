@@ -1,7 +1,14 @@
 import { Types } from "mongoose";
 import { Appointment } from "../models/Appointment";
 import { User } from "../models/User";
-import { getDay, parseISO, isBefore, startOfDay } from "date-fns";
+import {
+  parseISO,
+  isBefore,
+  startOfDay,
+  isWeekend,
+  parse,
+  isValid,
+} from "date-fns";
 
 export class AppointmentService {
   /**
@@ -46,9 +53,8 @@ export class AppointmentService {
       };
     }
 
-    // Check not on weekends
-    const dayOfWeek = getDay(appointmentDate);
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
+    // Check not on weekends (usando isWeekend do date-fns)
+    if (isWeekend(appointmentDate)) {
       return {
         valid: false,
         error: "Appointments cannot be scheduled on weekends",
@@ -56,26 +62,18 @@ export class AppointmentService {
     }
 
     // Validate working hours: 7:00-12:00 and 14:00-18:00
-    const timeParts = time.split(":");
-    if (timeParts.length !== 2) {
-      throw new Error("Invalid time format. Use HH:MM");
+    const parsedTime = parse(time, "HH:mm", new Date());
+
+    if (!isValid(parsedTime)) {
+      return {
+        valid: false,
+        error: "Invalid time format. Use HH:MM",
+      };
     }
 
-    const hours = parseInt(timeParts[0]!);
-    const minutes = parseInt(timeParts[1]!);
-
-    if (isNaN(hours) || isNaN(minutes)) {
-      throw new Error("Invalid time format. Use HH:MM");
-    }
-    const totalMinutes = hours * 60 + minutes;
-    const morningStart = 7 * 60,
-      morningEnd = 12 * 60;
-    const afternoonStart = 14 * 60,
-      afternoonEnd = 18 * 60;
-
+    const hours = parsedTime.getHours();
     const isValidTime =
-      (totalMinutes >= morningStart && totalMinutes < morningEnd) ||
-      (totalMinutes >= afternoonStart && totalMinutes < afternoonEnd);
+      (hours >= 7 && hours < 12) || (hours >= 14 && hours < 18);
 
     if (!isValidTime) {
       return {
@@ -97,22 +95,18 @@ export class AppointmentService {
     doctorId: string,
     patientId: string
   ): Promise<{ valid: boolean; error?: string }> {
-    console.log(patientId);
-    
     const [doctor, patient] = await Promise.all([
       User.findOne({ _id: doctorId, role: "doctor", isActive: true }),
       User.findOne({ _id: patientId, role: "patient", isActive: true }),
     ]);
 
-    console.log(patient);
-    
     if (!doctor) return { valid: false, error: "Doctor not found or inactive" };
     if (!patient)
       return { valid: false, error: "Patient not found or inactive" };
 
     return { valid: true };
   }
-  
+
   /**
    * Gets all appointments for a doctor on the current day
    * @param doctorId - Doctor's unique identifier
