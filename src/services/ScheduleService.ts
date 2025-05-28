@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { Appointment } from "../models/Appointment";
-import { parseISO, isWeekend, format } from "date-fns";
+import { parseISO, isWeekend } from "date-fns";
 
 export class ScheduleService {
   /**
@@ -60,36 +60,5 @@ export class ScheduleService {
 
     // Return available slots (not booked)
     return allSlots.filter((slot) => !bookedTimes.includes(slot));
-  }
-
-  /**
-   * Validates if a time is within working hours
-   * @param time - Time in HH:MM format
-   * @returns True if within working hours, false otherwise
-   */
-  isValidWorkingTime(time: string): boolean {
-    const timeParts = time.split(":");
-    if (timeParts.length !== 2) {
-      throw new Error("Invalid time format. Use HH:MM");
-    }
-
-    const hours = parseInt(timeParts[0]!);
-    const minutes = parseInt(timeParts[1]!);
-
-    if (isNaN(hours) || isNaN(minutes)) {
-      throw new Error("Invalid time format. Use HH:MM");
-    }
-    const totalMinutes = hours * 60 + minutes;
-
-    // Working hours: 7:00-12:00 and 14:00-18:00
-    const morningStart = 7 * 60,
-      morningEnd = 12 * 60;
-    const afternoonStart = 14 * 60,
-      afternoonEnd = 18 * 60;
-
-    return (
-      (totalMinutes >= morningStart && totalMinutes < morningEnd) ||
-      (totalMinutes >= afternoonStart && totalMinutes < afternoonEnd)
-    );
   }
 }

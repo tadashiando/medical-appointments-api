@@ -6,4 +6,3 @@ export const DEFAULT_WORKING_HOURS: IWorkingHours = {
 };
 
 export const DEFAULT_APPOINTMENT_DURATION = 30;
-export const DEFAULT_BREAK_TIME = 5;

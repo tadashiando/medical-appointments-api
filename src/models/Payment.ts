@@ -117,19 +117,6 @@ paymentSchema.pre<IPaymentDocument>("save", function (next) {
   next();
 });
 
-paymentSchema.statics.processSandboxPayment = function (paymentData: any) {
-  const isSuccess = Math.random() > 0.1; // 90% de éxito
-
-  return {
-    success: isSuccess,
-    transactionId:
-      "SB_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
-    message: isSuccess
-      ? "Payment processed successfully"
-      : "Payment failed - insufficient funds",
-  };
-};
-
 paymentSchema.statics.getPaymentsByPatient = function (patientId: string) {
   return this.find({ patientId })
     .populate("appointmentId", "date time reason")

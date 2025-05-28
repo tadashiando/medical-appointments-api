@@ -111,12 +111,4 @@ userSchema.methods.comparePassword = async function (
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-userSchema.statics.findDoctors = function () {
-  return this.find({ role: "doctor", isActive: true });
-};
-
-userSchema.statics.findPatients = function () {
-  return this.find({ role: "patient", isActive: true });
-};
-
 export const User = mongoose.model<IUserDocument>("User", userSchema);

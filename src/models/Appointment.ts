@@ -122,35 +122,6 @@ appointmentSchema.pre<IAppointmentDocument>("save", function (next) {
   next();
 });
 
-appointmentSchema.statics.getTodayAppointments = function (doctorId: string) {
-  const today = new Date();
-  const startOfDay = new Date(today.setHours(0, 0, 0, 0));
-  const endOfDay = new Date(today.setHours(23, 59, 59, 999));
-
-  return this.find({
-    doctorId,
-    date: { $gte: startOfDay, $lte: endOfDay },
-    status: { $in: ["confirmed", "pending"] },
-  })
-    .populate("patientId", "name email phone")
-    .sort({ time: 1 });
-};
-
-appointmentSchema.statics.isTimeSlotAvailable = async function (
-  doctorId: string,
-  date: Date,
-  time: string
-) {
-  const existingAppointment = await this.findOne({
-    doctorId,
-    date,
-    time,
-    status: { $in: ["pending", "confirmed"] },
-  });
-
-  return !existingAppointment;
-};
-
 export const Appointment = mongoose.model<IAppointmentDocument>(
   "Appointment",
   appointmentSchema
