@@ -15,14 +15,13 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
     "mongoose": "^8.15.0",
-    "mongoose-validator": "^2.1.0",
-    "zod": "^3.25.26"
+    "zod": "^3.25.32"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",

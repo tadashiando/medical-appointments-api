@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "files": true
+  },
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
@@ -23,6 +26,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": [],
     "paths": {
       "@/*": ["*"],
       "@/models/*": ["models/*"],
@@ -34,6 +39,6 @@
       "@/utils/*": ["utils/*"]
     }
   },
-  "include": ["src/**/*", "express.d.ts"],
+  "include": ["src/**/*", "src/types/express.d.ts"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
