@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
 import { authenticateToken } from "../../middleware/authentication";
 
-// Mock JWT
 jest.mock("jsonwebtoken");
 const mockedJWT = jwt as jest.Mocked<typeof jwt>;
 
@@ -24,7 +23,6 @@ describe("Authentication Middleware", () => {
   });
 
   it("should authenticate valid token", () => {
-    // Arrange
     const mockUser = { userId: "test-id", role: "patient" };
     (mockRequest.header as jest.Mock).mockReturnValue("Bearer valid-token");
     mockedJWT.verify = jest
@@ -33,30 +31,25 @@ describe("Authentication Middleware", () => {
         callback(null, mockUser);
       });
 
-    // Act
     authenticateToken(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
 
-    // Assert
     expect(mockRequest.user).toEqual(mockUser);
     expect(mockNext).toHaveBeenCalled();
   });
 
   it("should reject request without token", () => {
-    // Arrange
     (mockRequest.header as jest.Mock).mockReturnValue(undefined);
 
-    // Act
     authenticateToken(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
 
-    // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.json).toHaveBeenCalledWith({
       message: "Access denied",
@@ -65,7 +58,6 @@ describe("Authentication Middleware", () => {
   });
 
   it("should reject invalid token", () => {
-    // Arrange
     (mockRequest.header as jest.Mock).mockReturnValue("Bearer invalid-token");
     mockedJWT.verify = jest
       .fn()
@@ -73,14 +65,12 @@ describe("Authentication Middleware", () => {
         callback(new Error("Invalid token"), null);
       });
 
-    // Act
     authenticateToken(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
 
-    // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(403);
     expect(mockResponse.json).toHaveBeenCalledWith({
       message: "Invalid token",
@@ -89,7 +79,6 @@ describe("Authentication Middleware", () => {
   });
 
   it("should extract token from Bearer authorization header", () => {
-    // Arrange
     const mockUser = { userId: "test-id", role: "doctor" };
     (mockRequest.header as jest.Mock).mockReturnValue("Bearer test-jwt-token");
     mockedJWT.verify = jest
@@ -99,14 +88,12 @@ describe("Authentication Middleware", () => {
         callback(null, mockUser);
       });
 
-    // Act
     authenticateToken(
       mockRequest as Request,
       mockResponse as Response,
       mockNext
     );
 
-    // Assert
     expect(mockedJWT.verify).toHaveBeenCalledWith(
       "test-jwt-token",
       process.env.JWT_SECRET,

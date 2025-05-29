@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 import { IAppointment } from "../interfaces/IAppointment";
 import IBaseDocument from "../interfaces/IBaseDocument";
 
-// Extender IAppointment con IBaseDocument
 export interface IAppointmentDocument extends IAppointment, IBaseDocument {}
 
 const appointmentSchema = new Schema<IAppointmentDocument>(
@@ -80,7 +79,7 @@ const appointmentSchema = new Schema<IAppointmentDocument>(
   }
 );
 
-// Composed indexes to optimize queries
+// Composite indexes to optimize queries
 appointmentSchema.index({ doctorId: 1, date: 1 });
 appointmentSchema.index({ patientId: 1, date: 1 });
 appointmentSchema.index({ date: 1, time: 1 });

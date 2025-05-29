@@ -110,7 +110,7 @@ paymentSchema.index({ createdAt: -1 });
 
 paymentSchema.pre<IPaymentDocument>("save", function (next) {
   if (!this.transactionId && this.status === "completed") {
-    // Generar un ID de transacción único
+    // Generate a unique transaction ID
     this.transactionId =
       "TXN_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
   }

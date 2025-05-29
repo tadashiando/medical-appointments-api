@@ -1,4 +1,3 @@
-// src/utils/validationSchemas.ts - SOLUÇÃO RECOMENDADA
 import { z } from "zod";
 import { parse, isValid, isWeekend, isBefore, startOfDay } from "date-fns";
 import { WORKING_HOURS_CONFIG } from "./constants";

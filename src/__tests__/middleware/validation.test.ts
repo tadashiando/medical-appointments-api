@@ -21,7 +21,6 @@ describe("Validation Middleware", () => {
   });
 
   it("should pass validation with valid data", () => {
-    // Arrange
     const schema = z.object({
       body: z.object({
         name: z.string(),
@@ -32,16 +31,13 @@ describe("Validation Middleware", () => {
     mockRequest.body = { name: "Test", age: 25 };
     const middleware = validate(schema);
 
-    // Act
     middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
-    // Assert
     expect(mockNext).toHaveBeenCalled();
     expect(mockResponse.status).not.toHaveBeenCalled();
   });
 
   it("should return 400 with validation errors for invalid data", () => {
-    // Arrange
     const schema = z.object({
       body: z.object({
         name: z.string(),
@@ -52,10 +48,8 @@ describe("Validation Middleware", () => {
     mockRequest.body = { name: 123, age: "invalid" }; // Invalid types
     const middleware = validate(schema);
 
-    // Act
     middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
-    // Assert
     expect(mockResponse.status).toHaveBeenCalledWith(400);
     expect(mockResponse.json).toHaveBeenCalledWith({
       success: false,
@@ -69,7 +63,6 @@ describe("Validation Middleware", () => {
   });
 
   it("should handle validation with params and query", () => {
-    // Arrange
     const schema = z.object({
       params: z.object({
         id: z.string(),
@@ -83,10 +76,8 @@ describe("Validation Middleware", () => {
     mockRequest.query = { limit: "10" };
     const middleware = validate(schema);
 
-    // Act
     middleware(mockRequest as Request, mockResponse as Response, mockNext);
 
-    // Assert
     expect(mockNext).toHaveBeenCalled();
   });
 });
