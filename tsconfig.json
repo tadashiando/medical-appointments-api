@@ -27,7 +27,7 @@
     "emitDecoratorMetadata": true,
     "baseUrl": "./src",
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "types": [],
+    "types": ["jest", "node"],
     "paths": {
       "@/*": ["*"],
       "@/models/*": ["models/*"],
@@ -40,5 +40,5 @@
     }
   },
   "include": ["src/**/*", "src/types/express.d.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["node_modules", "dist", "coverage"]
 }
