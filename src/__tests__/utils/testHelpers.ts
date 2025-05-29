@@ -1,8 +1,16 @@
-import { Types } from "mongoose";
+export const mockIds = {
+  doctor1: "507f1f77bcf86cd799439011",
+  doctor2: "507f1f77bcf86cd799439012",
+  patient1: "507f1f77bcf86cd799439013",
+  patient2: "507f1f77bcf86cd799439014",
+  appointment1: "507f1f77bcf86cd799439015",
+  appointment2: "507f1f77bcf86cd799439016",
+  payment1: "507f1f77bcf86cd799439017",
+};
 
 export const mockUsers = {
   doctor: {
-    _id: new Types.ObjectId("507f1f77bcf86cd799439011"),
+    _id: mockIds.doctor1,
     name: "Dr. Test",
     email: "doctor@test.com",
     role: "doctor",
@@ -11,7 +19,7 @@ export const mockUsers = {
     licenseNumber: "MED001",
   },
   patient: {
-    _id: new Types.ObjectId("507f1f77bcf86cd799439012"),
+    _id: mockIds.patient1,
     name: "Patient Test",
     email: "patient@test.com",
     role: "patient",
@@ -23,20 +31,20 @@ export const mockUsers = {
 
 export const mockAppointments = {
   pending: {
-    _id: new Types.ObjectId("507f1f77bcf86cd799439013"),
-    patientId: mockUsers.patient._id,
-    doctorId: mockUsers.doctor._id,
-    date: new Date("2024-03-15"),
+    _id: mockIds.appointment1,
+    patientId: mockIds.patient1,
+    doctorId: mockIds.doctor1,
+    date: new Date("2025-10-15"),
     time: "09:00",
     status: "pending",
     paymentStatus: "pending",
     reason: "Test consultation",
   },
   paid: {
-    _id: new Types.ObjectId("507f1f77bcf86cd799439014"),
-    patientId: mockUsers.patient._id,
-    doctorId: mockUsers.doctor._id,
-    date: new Date("2024-03-16"),
+    _id: mockIds.appointment2,
+    patientId: mockIds.patient1,
+    doctorId: mockIds.doctor1,
+    date: new Date("2025-10-16"),
     time: "10:00",
     status: "pending",
     paymentStatus: "paid",
@@ -48,14 +56,8 @@ export const mockCardData = {
   valid: {
     cardNumber: "1234567890123456",
     cardHolder: "Test User",
-    expiryDate: "12/25",
+    expiryDate: "12/28",
     cvv: "123",
-  },
-  invalid: {
-    cardNumber: "123",
-    cardHolder: "",
-    expiryDate: "00/00",
-    cvv: "1",
   },
   expired: {
     cardNumber: "1234567890123456",
