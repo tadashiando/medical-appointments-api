@@ -9,6 +9,7 @@ import {
   parse,
   isValid,
 } from "date-fns";
+import { WORKING_HOURS_CONFIG } from "../utils/constants";
 
 export class AppointmentService {
   /**
@@ -73,12 +74,15 @@ export class AppointmentService {
 
     const hours = parsedTime.getHours();
     const isValidTime =
-      (hours >= 7 && hours < 12) || (hours >= 14 && hours < 18);
+      (hours >= WORKING_HOURS_CONFIG.MORNING_START &&
+        hours < WORKING_HOURS_CONFIG.MORNING_END) ||
+      (hours >= WORKING_HOURS_CONFIG.AFTERNOON_START &&
+        hours < WORKING_HOURS_CONFIG.AFTERNOON_END);
 
     if (!isValidTime) {
       return {
         valid: false,
-        error: "Appointments must be between 7:00-12:00 or 14:00-18:00",
+        error: `Appointments must be between ${WORKING_HOURS_CONFIG.MORNING_START}:00-${WORKING_HOURS_CONFIG.MORNING_END}:00 or ${WORKING_HOURS_CONFIG.AFTERNOON_START}:00-${WORKING_HOURS_CONFIG.AFTERNOON_END}:00`,
       };
     }
 

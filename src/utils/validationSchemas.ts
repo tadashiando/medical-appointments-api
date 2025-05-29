@@ -1,13 +1,19 @@
 // src/utils/validationSchemas.ts - SOLUÇÃO RECOMENDADA
 import { z } from "zod";
 import { parse, isValid, isWeekend, isBefore, startOfDay } from "date-fns";
+import { WORKING_HOURS_CONFIG } from "./constants";
 
 const isWorkingHour = (time: string): boolean => {
   const date = parse(time, "HH:mm", new Date());
   if (!isValid(date)) return false;
 
   const h = date.getHours();
-  return (h >= 7 && h < 12) || (h >= 14 && h < 18);
+  return (
+    (h >= WORKING_HOURS_CONFIG.MORNING_START &&
+      h < WORKING_HOURS_CONFIG.MORNING_END) ||
+    (h >= WORKING_HOURS_CONFIG.AFTERNOON_START &&
+      h < WORKING_HOURS_CONFIG.AFTERNOON_END)
+  );
 };
 
 const isFutureWorkday = (dateStr: string): boolean => {

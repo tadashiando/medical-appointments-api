@@ -1,6 +1,10 @@
 import { Types } from "mongoose";
 import { Appointment } from "../models/Appointment";
 import { parseISO, isWeekend } from "date-fns";
+import {
+  DEFAULT_APPOINTMENT_DURATION,
+  WORKING_HOURS_CONFIG,
+} from "../utils/constants";
 
 export class ScheduleService {
   /**
@@ -9,15 +13,24 @@ export class ScheduleService {
    */
   generateTimeSlots(): string[] {
     const slots: string[] = [];
+    const slotDuration = DEFAULT_APPOINTMENT_DURATION;
 
-    // Morning slots: 7:00-11:30 (last slot ends at 12:00)
-    for (let hour = 7; hour < 12; hour++) {
+    // Morning slots
+    for (
+      let hour = WORKING_HOURS_CONFIG.MORNING_START;
+      hour < WORKING_HOURS_CONFIG.MORNING_END;
+      hour++
+    ) {
       slots.push(`${hour.toString().padStart(2, "0")}:00`);
       slots.push(`${hour.toString().padStart(2, "0")}:30`);
     }
 
-    // Afternoon slots: 14:00-17:30 (last slot ends at 18:00)
-    for (let hour = 14; hour < 18; hour++) {
+    // Afternoon slots
+    for (
+      let hour = WORKING_HOURS_CONFIG.AFTERNOON_START;
+      hour < WORKING_HOURS_CONFIG.AFTERNOON_END;
+      hour++
+    ) {
       slots.push(`${hour.toString().padStart(2, "0")}:00`);
       slots.push(`${hour.toString().padStart(2, "0")}:30`);
     }

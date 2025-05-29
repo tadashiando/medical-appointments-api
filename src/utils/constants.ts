@@ -1,8 +1,10 @@
-import { IWorkingHours } from "../interfaces/ISchedule";
-
-export const DEFAULT_WORKING_HOURS: IWorkingHours = {
-  morning: { start: "07:00", end: "12:00" },
-  afternoon: { start: "14:00", end: "18:00" },
-};
-
 export const DEFAULT_APPOINTMENT_DURATION = 30;
+
+export const WORKING_HOURS_CONFIG = {
+  MORNING_START: 7,
+  MORNING_END: 12,
+  AFTERNOON_START: 14,
+  AFTERNOON_END: 18,
+} as const;
+
+export const APPOINTMENT_SLOTS_PER_HOUR = 2;
