@@ -63,7 +63,7 @@ export const createAppointment = async (
     // Create the appointment
     const appointment = new Appointment({
       patientId: new Types.ObjectId(patientId),
-      doctorId: new Types.ObjectId(doctorId),
+      doctorId: new Types.ObjectId(doctorId as string),
       date: appointmentDate,
       time,
       reason,
@@ -73,12 +73,15 @@ export const createAppointment = async (
     });
 
     await appointment.save();
-    await appointment.populate("doctorId", "name email specialization");
+    const populatedAppointment = await appointment.populate(
+      "doctorId",
+      "name email specialization"
+    );
 
     res.status(201).json({
       success: true,
       message: "Appointment created successfully",
-      data: appointment,
+      data: populatedAppointment,
     });
   } catch (error) {
     res.status(500).json({
