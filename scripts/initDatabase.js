@@ -130,7 +130,7 @@ async function initDatabase() {
       {
         patientId: patientIds[0],
         doctorId: doctorIds[0],
-        date: new Date("2024-03-20"),
+        date: new Date("2025-10-15"),
         time: "09:00",
         duration: 30,
         reason: "General consultation",
@@ -143,7 +143,7 @@ async function initDatabase() {
       {
         patientId: patientIds[1],
         doctorId: doctorIds[1],
-        date: new Date("2024-03-20"),
+        date: new Date("2025-10-15"),
         time: "10:30",
         duration: 30,
         reason: "Cardiology checkup",
